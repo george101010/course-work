@@ -162,15 +162,15 @@ ostream& operator<< (ostream &out, const polynom &A){ // перегрузка co
     string getname(polynom&  A){
             return A.name;}
     //=========конструктор полинома=======
-    polynom make_poly(string st,vector <long long int> cf){
-        polynom A;
-        A.name=st;
-        A.degree=cf.size()-1;
-        A.coeffs=cf;
-        return A;
-    }
+  //  polynom make_poly(string st,vector <long int> *cf){
+   //     polynom A;
+   //     A.name=st;
+   //     A.degree=cf->size()-1;
+  //      A.coeffs=cf.operator[];
+   //     return A;
+  //  }
 //===присвоение имени полиному из основной программы
-    polynom :: void setname(string st){
+    void polynom :: setname(string st){
         name=st;}
 
 

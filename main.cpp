@@ -66,16 +66,21 @@ if (n_o_w==2){
         if (name_cont(words[1])){
              Nom=search_poly(words[1],store);
              getline(cin,s);
-             vector <long long int> st_coeff=make_coeff(s);
+             vector <long long int> st_coeff;
+
              if ( st_coeff.empty() ){
                 cout<<"Coefficents entered incorrectly.\n";
              }
              else{
-             if (Nom == -1){ store.push_back(make_poly(words[1],st_coeff));}
-             else { store[Nom]=make_poly(words[1],st_coeff);}
+             if (Nom == -1){ //store.push_back(make_poly(words[1], st_coeff));
+
+             }
+             else {// store[Nom]=make_poly(words[1], st_coeff);
+             }
              }
         }
          else{ cout<<"Name of the polylom entered incorrectly.\n";}
+
     }
     if ((words[0]!="init") && (words[0]!="print")){
       cout<<serror;
@@ -96,7 +101,7 @@ if (n_o_w==3){
                 if (Nom!=-1){
                     store[Nom]=derivat(store[Nom2],1);
                 }
-                else{ store.push_back(derivat(store[Nom2],1)); store[store.size()-1].set(words[1]);}
+                else{ store.push_back(derivat(store[Nom2],1)); store[store.size()-1].setname(words[1]);}
             }
            else{ cout<<"Polynom "<<words[2]<<" is not declared.\n";}
        }

@@ -57,46 +57,60 @@ bool name_cont(string st){
 //===функция создания вектора коэффициентов для полинома
 vector <long long int> make_coeff(string st){
     vector <long long int> numbs;
-    numbs.clear();
+    //numbs.clear();
     vector <string> ws=split_list(st);
     int lenst=ws.size();
-    int number;
-    for (int i=0;i<lenst;i++){
-        number=0;
-
-
-        bool neg;
-        if (ws[i][0]=='-'){  neg=1; ws[i].erase (0,1); }
-        else {  neg=0; }
-
-        int dlnum=ws[i].length();
-
-        if ( (dlnum==0) || (dlnum>3)){
-                numbs.clear();
-                cout<<"+++Coefficents entered incorrectly.\n";
-                return numbs;
-        }
-
-        for (int k=0;k<dlnum;k++){
-            if (isdigit(ws[i][k])==0) {
+    //если в строке больше 20 слов или ноль
+    if ((lenst>20) || (lenst==0)){
+        cout<<"ERROR\n";
+        numbs.clear();
+        return numbs;
+    }
+    int lenw=0;//днина одного слова
+    for (int i=lenst-1;i>0;i-- ){
+        int number=0;
+        lenw=ws[i].length();
+        //если в слове больше 4 символов
+        if (lenst>4){
+            cout<<"ERROR\n";
+            numbs.clear();
+            return numbs;
+       }
+       //если спереди минус удалить его
+       //и длину слова уменьшить
+       //флаг отрицательности true
+       bool neg;
+       if (ws[i][0]=='-'){
+            neg=1;
+            ws[i].erase(0,1);
+            lenw=lenw-1;
+       }//если в слове был только минус это ошибка
+       if (lenw==0){
+            cout<<"ERROR\n";
+            numbs.clear();
+            return numbs;
+       }
+       //формирование числа
+        for (int k=0;k<lenw;k++ ){
+            //если цифра, то формирование
+            //числа иначе ошибка
+            if (isdigit(ws[i][k])){
+                number=number*10+(int)ws[i][k]-48;
+            }
+            else{
                 numbs.clear();
                 cout<<"Coefficents entered incorrectly.\n";
                 return numbs;
-            }
-            else {
-                number=number*10+(int)ws[i][k]-48;
-            }
-            }
-        if   (number>100){
+            }//если число по модулю больше 100 - ошибка
+            if   (number>100){
                 numbs.clear();
                 cout<<"Some coefficents more than 100.\n";
                 return numbs;
-        }
-        if (neg){ number=-number; }
-        numbs.push_back(number);
+            }
+            if (neg){ number=-number; }//добавить минус если он есть
+            numbs.push_back(number);
+            } }
 
-
-    }
     return numbs;
 }
 
