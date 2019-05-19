@@ -111,6 +111,10 @@ vector <long long int> make_coeff(string st){
             }
             if (neg){ number=-number; }//добавить минус если он есть
             numbs.push_back(number); }
+            if (numbs[lenst-1]==0){
+                cout<<"The first coefficient must not be equal zero\n";
+               numbs.clear();
+            }
 
     return numbs;
 }
