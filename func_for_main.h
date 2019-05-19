@@ -15,5 +15,7 @@ bool name_cont(string st);
 int search_poly (string nm,vector <polynom> &vp);
 //функция создания вектора коэффициентов для полинома
 vector <long long int> make_coeff(string st);
-
+//функция конвертирует вводимую строку в число от 0 до n
+//если строка не число, функция возвращает -1
+int ent_num(string str, int n);
 #endif

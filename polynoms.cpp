@@ -102,6 +102,7 @@ polynom inser(polynom&   A,polynom&   B){
 //=====производная порядка n=====
 polynom derivat(polynom& A,int n){
     polynom Res;
+    Res.coeffs.clear();
     if (n>A.degree){// обработка случаев когда n больше или
         Res.degree=0;//равна степени полинома
 
@@ -133,42 +134,77 @@ return Res;
 ostream& operator<< (ostream &out, const polynom &A){ // перегрузка cout
     //печать названия полинома
     out<<A.name<<"(x)=";
-    //печать коэффициента при х^n
-    out<<A.coeffs[A.degree]<<"*x^"<<A.degree;
-    //печать коэффициентов при х^i
-    for (int i=A.degree-1;i>1;i--){
-        if (A.coeffs[i]>0 ){
-                out<<"+";}
-        if (A.coeffs[i]!=0){
-                out<<A.coeffs[i]<<"*x^"<<i;
-        }
-        }
-    //печать коэффициента при х
-    if (A.coeffs[1]!=0){
-        if (A.coeffs[1]>0){
-                out<<"+";}
-        out<<A.coeffs[1]<<"*x";
+    if (A.degree==0){//если полином степени 0
+        out<<A.coeffs[0]<<"\n";
+        return out;
     }
+    if (A.degree==1){//если полином степени 1
+        out<<A.coeffs[1]<<"*x";
+        if (A.coeffs[0]>0) {
+            out<<"+"<<A.coeffs[0];
+        }
+        if (A.coeffs[0]<0) {
+            out<<A.coeffs[0];
+        }
+        out<<"\n";
+        return out;
+    }
+    else {//если полином степени n>1
+        if ((A.coeffs[A.degree]!=1) && (A.coeffs[A.degree]!=-1) ){out<<A.coeffs[A.degree]<<"*";}
+        out<<"x^"<<A.degree;//печать x^n
+
+
+        for (int i=A.degree-1;i>1;i--){//печать x^i   i>1
+        if (A.coeffs[i]>0 ){
+                out<<"+";
+                if (A.coeffs[i]!=1){
+                    out<<A.coeffs[i]<<"*x^"<<i;
+                }
+                else{out<<"x^"<<i;}
+                }
+
+        if (A.coeffs[i]<0){
+                if (A.coeffs[i]!=-1){
+                    out<<A.coeffs[i]<<"*x^"<<i;
+                }
+                else{ out<<"-x^"<<i; }
+        }
+        }
+        if (A.coeffs[1]!=0){  //печать x^1
+                if ((A.coeffs[1]>0) ){
+                        out<<"+";
+                       if (A.coeffs[1]!=1){out<<A.coeffs[1]<<"*";}
+                        out<<"x";}
+             else {
+
+                       if (A.coeffs[1]!=-1){out<<A.coeffs[1]<<"*";}
+                       if (A.coeffs[1]==-1){out<<"-";}
+                        out<<"x";}
+            }
     //печать свободного члена
     if (A.coeffs[0]!=0){
         if (A.coeffs[0]>0){
                 out<<"+";}
         out<<A.coeffs[0];
     }
+    }
 
 
-    return out;}
+     out<<"\n";
+
+    return out; }
     //=======возвращает имя полинома======
     string getname(polynom&  A){
             return A.name;}
     //=========конструктор полинома=======
-  //  polynom make_poly(string st,vector <long int> *cf){
-   //     polynom A;
-   //     A.name=st;
-   //     A.degree=cf->size()-1;
-  //      A.coeffs=cf.operator[];
-   //     return A;
-  //  }
+    void polynom :: mp(string st,vector <long long int> &cf ){
+
+
+        name=st;
+        degree=cf.size()-1;
+        coeffs=cf;
+
+    }
 //===присвоение имени полиному из основной программы
     void polynom :: setname(string st){
         name=st;}

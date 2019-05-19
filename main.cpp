@@ -10,14 +10,13 @@ using namespace std;
 int main(){
 
    //строка сообщает о синтаксической ошибке
-string serror="Syntax error. Data entered incorrectly.\n";
+string serror="Syntax error. Command entered incorrectly.\n";
 int Nom;//номер полинома в векторе
+int Nom2,Nom3;//номера полиномов - операндов в векторе
 //строка для ввода команды
 string s;
 
-string res_of_op="";//имя результата
-string opr_lef="";//имя левого операнда
-string opr_rig="";//имя правого операнда
+
 //вектор, хранящий полиномы для работы
 vector <polynom> store;
 store.clear();
@@ -51,6 +50,7 @@ if (n_o_w==1){
 
 //=====проверка на печать полинома
 if (n_o_w==2){
+
     if (words[0]=="print"){
         if (name_cont(words[1])){
             Nom=search_poly(words[1],store);
@@ -59,23 +59,39 @@ if (n_o_w==2){
           //что его нет в векторе
             else{ cout<<"Polynom "<<words[1]<<" is not declared.\n";}
             }//сообщение о неправильном вводе имени
-         else{ cout<<"Name of the polylom entered incorrectly.\n";}
-        }
+            else{
+                if (words[1]=="all"){
+                    Nom=store.size();
+                    for (int i=0;i<Nom;i++){
+                        cout<<store[i];
+                    }
+                }
+                else {cout<<"Name of the polylom entered incorrectly.\n";}
+                }
+            }
+
     //проверка на ввод нового полинома
     if (words[0]=="init"){
         if (name_cont(words[1])){
              Nom=search_poly(words[1],store);
+             cout<<"Enter the coefficients separated by a space:\n";
              getline(cin,s);
-             vector <long long int> st_coeff;
+             vector <long long int> st_coeff=make_coeff(s);
 
-             if ( st_coeff.empty() ){
-                cout<<"Coefficents entered incorrectly.\n";
-             }
-             else{
-             if (Nom == -1){ //store.push_back(make_poly(words[1], st_coeff));
+             if ( st_coeff.empty() ==0){
+
+
+             if (Nom == -1){
+
+                    polynom D;
+                    D.mp(words[1], st_coeff);
+                    store.push_back( D );
 
              }
-             else {// store[Nom]=make_poly(words[1], st_coeff);
+             else {
+                    polynom D;
+                    D.mp(words[1], st_coeff);
+                     store[Nom]=D;
              }
              }
         }
@@ -94,7 +110,7 @@ if (n_o_w==3){
 
     if (words[0]=="differ"){
        if (name_cont(words[1]) && name_cont(words[2])){
-            int Nom2;
+
              Nom2=search_poly(words[2],store);
             if (Nom2!=-1){
                 Nom=search_poly(words[1],store);
@@ -111,8 +127,126 @@ if (n_o_w==3){
       cout<<serror;
     }
 }
+
+if (n_o_w==4){
+    if (words[0]=="summ"){ //обработка суммы
+        if (name_cont(words[1]) && name_cont(words[2]) && name_cont(words[3])){
+
+                 Nom2=search_poly(words[2],store);
+                 Nom3=search_poly(words[3],store);
+                 if ( (Nom2!=-1) && (Nom3!=-1)){
+                     Nom=search_poly(words[1],store);
+                     if (Nom!=-1){
+                        store[Nom]=store[Nom2]+store[Nom3];
+                     }
+                     else{ store.push_back(store[Nom2]+store[Nom3]); store[store.size()-1].setname(words[1]);}
+                     }
+                      else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
+        }
+        else {cout<<"Name of the polylom entered incorrectly.\n"; }
+    }
+
+    if (words[0]=="substr"){ //обработка вычитания
+        if (name_cont(words[1]) && name_cont(words[2]) && name_cont(words[3])){
+
+                 Nom2=search_poly(words[2],store);
+                 Nom3=search_poly(words[3],store);
+                 if ( (Nom2!=-1) && (Nom3!=-1)){
+                     Nom=search_poly(words[1],store);
+                     if (Nom!=-1){
+                        store[Nom]=store[Nom2]-store[Nom3];
+                     }
+                     else{ store.push_back(store[Nom2]-store[Nom3]); store[store.size()-1].setname(words[1]);}
+                     }
+                      else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
+        }
+        else {cout<<"Name of the polylom entered incorrectly.\n"; }
+    }
+
+    if (words[0]=="mult"){ //обработка умножения
+        if (name_cont(words[1]) && name_cont(words[2]) && name_cont(words[3])){
+
+                 Nom2=search_poly(words[2],store);
+                 Nom3=search_poly(words[3],store);
+                 if ( (Nom2!=-1) && (Nom3!=-1)){
+                     Nom=search_poly(words[1],store);
+                     if (Nom!=-1){
+                        store[Nom]=store[Nom2]*store[Nom3];
+                     }
+                     else{ store.push_back(store[Nom2]*store[Nom3]); store[store.size()-1].setname(words[1]);}
+                     }
+                      else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
+        }
+        else {cout<<"Name of the polylom entered incorrectly.\n"; }
+    }
+
+    if (words[0]=="insert"){ //обработка вставки
+        if (name_cont(words[1]) && name_cont(words[2]) && name_cont(words[3])){
+
+                 Nom2=search_poly(words[2],store);
+                 Nom3=search_poly(words[3],store);
+                 if ( (Nom2!=-1) && (Nom3!=-1)){
+                     Nom=search_poly(words[1],store);
+                     if (Nom!=-1){
+                        store[Nom]=inser(store[Nom2], store[Nom3]);
+                     }
+                     else{ store.push_back(inser(store[Nom2], store[Nom3])); store[store.size()-1].setname(words[1]);}
+                     }
+                      else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
+        }
+        else {cout<<"Name of the polylom entered incorrectly.\n"; }
+    }
+//обработка производной n порядка
+    if (words[0]=="differ"){
+         if (name_cont(words[1]) && name_cont(words[2]) ){
+            Nom3=ent_num(words[3] , 500);
+            if (Nom3!=-1){
+                 Nom2=search_poly(words[2],store);
+                 if (Nom2!=-1){
+                    Nom=search_poly(words[1],store);
+                    if (Nom!=-1){
+                        store[Nom]=derivat(store[Nom2], Nom3);
+                     }
+                     else{ store.push_back(derivat(store[Nom2], Nom3)); store[store.size()-1].setname(words[1]);}
+
+                 }
+                 else {cout<<"Polynom "<<words[2]<<" is not declared.\n";}
+
+            }
+         }
+         else {cout<<"Name of the polylom entered incorrectly.\n"; }
+    }
+//обработка  возведения в степень n
+    if (words[0]=="pow"){
+         if (name_cont(words[1]) && name_cont(words[2]) ){
+            Nom3=ent_num(words[3] , 50);
+            if (Nom3!=-1){
+                 Nom2=search_poly(words[2],store);
+                 if (Nom2!=-1){
+                    Nom=search_poly(words[1],store);
+                    if (Nom!=-1){
+                        store[Nom]=pow(store[Nom2], Nom3);
+                     }
+                     else{ store.push_back(pow(store[Nom2], Nom3)); store[store.size()-1].setname(words[1]);}
+
+                 }
+                 else {cout<<"Polynom "<<words[2]<<" is not declared.\n";}
+
+            }
+         }
+         else {cout<<"Name of the polylom entered incorrectly.\n"; }
+    }
+//конец if
+ if ((words[0]!="pow") && (words[0]!="differ") && (words[0]!="insert") && (words[0]!="mult") && (words[0]!="summ") && (words[0]!="substr") ){
+    cout<<serror;
+ }
 }
-return 0;}
+
+}
+return 0;
+}
+
+
 
 
 

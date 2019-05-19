@@ -57,36 +57,37 @@ bool name_cont(string st){
 //===функция создания вектора коэффициентов для полинома
 vector <long long int> make_coeff(string st){
     vector <long long int> numbs;
-    //numbs.clear();
     vector <string> ws=split_list(st);
+
     int lenst=ws.size();
+
     //если в строке больше 20 слов или ноль
     if ((lenst>20) || (lenst==0)){
-        cout<<"ERROR\n";
+        cout<<"Polynom's degree must not be more than 20. Or entered string is empty.\n";
         numbs.clear();
         return numbs;
     }
-    int lenw=0;//днина одного слова
-    for (int i=lenst-1;i>0;i-- ){
+    int lenw=0;//длина одного слова
+    for (int i=lenst-1;i>=0;i-- ){
         int number=0;
         lenw=ws[i].length();
         //если в слове больше 4 символов
-        if (lenst>4){
-            cout<<"ERROR\n";
+        if (lenw>4){
+            cout<<"Word must have no more 4 symbols.\n";
             numbs.clear();
             return numbs;
        }
        //если спереди минус удалить его
        //и длину слова уменьшить
        //флаг отрицательности true
-       bool neg;
+       bool neg=0;
        if (ws[i][0]=='-'){
             neg=1;
             ws[i].erase(0,1);
             lenw=lenw-1;
        }//если в слове был только минус это ошибка
        if (lenw==0){
-            cout<<"ERROR\n";
+            cout<<"Number must not be contain only minus.\n";
             numbs.clear();
             return numbs;
        }
@@ -107,10 +108,33 @@ vector <long long int> make_coeff(string st){
                 cout<<"Some coefficents more than 100.\n";
                 return numbs;
             }
+            }
             if (neg){ number=-number; }//добавить минус если он есть
-            numbs.push_back(number);
-            } }
+            numbs.push_back(number); }
 
     return numbs;
 }
-
+//===функция конвертирует вводимую строку в число от 0 до n
+//===если строка не число, функция возвращает -1
+int ent_num(string str, int n){
+  int len=str.length();
+  if (len>3){//если строка больше 3 символов то
+    cout<<"Word must have no more 3 symbols.";//выход из функции
+    return -1;
+  }
+  int number=0;
+  for (int i=0;i<len;i++){
+    if (isdigit(str[i])){
+      number=10*number+(int)str[i]-48;
+    }
+    else {//если в строке другие символы
+      cout<<"Number entered incorrectly.\n";
+      return -1;
+    }
+    }
+  if (number>n){//если число больше заданного  n
+    cout<<"The entered number is greater than "<<n<<".\n";
+    return -1;
+  }
+return number;
+}

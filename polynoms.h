@@ -15,11 +15,12 @@ class polynom {
          friend  polynom derivat(polynom& ,int n);//производная порядка n
          friend  polynom pow(polynom& ,int n);// перегрузка возведения в степень
          friend  polynom inser(polynom&   A,polynom&   B);//вставка полинома В в полином А
-         friend string getname(polynom&  );//возвращает имя полинома
-        // friend polynom make_poly(string st,vector <long long int> cf);//конструктор полинома из его имени
+
+         friend  string getname(polynom&  );//возвращает имя полинома
+         void mp(string st,vector <long long int> &cf);
          void setname(string st);//присвоение имени из основной программы
-        //и вводимых коэффициентов
-    public:
+
+    private:
         string name;//имя полинома
         int degree;//степень полинома
         vector<long long int>coeffs;//вектор коэффициентов полинома
