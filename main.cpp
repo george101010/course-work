@@ -20,13 +20,14 @@ string s;
 //вектор, хранящий полиномы для работы
 vector <polynom> store;
 store.clear();
-
+vector <string> words;//вектор из слов
+cout<<"Polynom calculator is ready for work. Enter necessary command.\n";
 //начало работы программы
 while (true){
 
 getline(cin,s);//ввод команды
 
-vector <string> words=split_list(s);//вектор из слов
+words=split_list(s);//формирование вектора из слов
 
 int n_o_w=words.size();//количество слов в команде
  //(number of words)- расшифровка
@@ -41,6 +42,7 @@ if (n_o_w==1){
         //очистка вектора полиномов
         //перед выходом из программы
          store.clear();
+         words.clear();
          break;
         }
     else {
@@ -62,9 +64,11 @@ if (n_o_w==2){
             else{
                 if (words[1]=="all"){
                     Nom=store.size();
-                    for (int i=0;i<Nom;i++){
+                    if (Nom!=0){
+                        for (int i=0;i<Nom;i++){
                         cout<<store[i];
-                    }
+                        }}
+                        else {cout<<"No polynoms were created.\n";}
                 }
                 else {cout<<"Name of the polylom entered incorrectly.\n";}
                 }
@@ -169,11 +173,13 @@ if (n_o_w==4){
                  Nom2=search_poly(words[2],store);
                  Nom3=search_poly(words[3],store);
                  if ( (Nom2!=-1) && (Nom3!=-1)){
-                     Nom=search_poly(words[1],store);
-                     if (Nom!=-1){
-                        store[Nom]=store[Nom2]*store[Nom3];
-                     }
-                     else{ store.push_back(store[Nom2]*store[Nom3]); store[store.size()-1].setname(words[1]);}
+                    if ((get_degree(store[Nom2])<=100) && (get_degree(store[Nom3])<=100)){//если степени операндов не превышают 100
+                        Nom=search_poly(words[1],store);
+                        if (Nom!=-1){
+                            store[Nom]=store[Nom2]*store[Nom3];
+                        }
+                        else{ store.push_back(store[Nom2]*store[Nom3]); store[store.size()-1].setname(words[1]);} }
+                 else {cout<<"One of the polynoms have degree more than 50.\n";}
                      }
                       else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
         }
@@ -186,13 +192,15 @@ if (n_o_w==4){
                  Nom2=search_poly(words[2],store);
                  Nom3=search_poly(words[3],store);
                  if ( (Nom2!=-1) && (Nom3!=-1)){
-                     Nom=search_poly(words[1],store);
-                     if (Nom!=-1){
-                        store[Nom]=inser(store[Nom2], store[Nom3]);
-                     }
-                     else{ store.push_back(inser(store[Nom2], store[Nom3])); store[store.size()-1].setname(words[1]);}
-                     }
-                      else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
+                     if ((get_degree(store[Nom2])<=50) && (get_degree(store[Nom3])<=50)){//если степени операндов не превышают 50
+                        Nom=search_poly(words[1],store);
+                        if (Nom!=-1){
+                            store[Nom]=inser(store[Nom2], store[Nom3]);
+                        }
+                        else{ store.push_back(inser(store[Nom2], store[Nom3])); store[store.size()-1].setname(words[1]);}}
+                        else {cout<<"One of the polynoms have degree more than 50.\n";}
+                        }
+                        else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
         }
         else {cout<<"Name of the polylom entered incorrectly.\n"; }
     }
@@ -220,19 +228,23 @@ if (n_o_w==4){
     if (words[0]=="pow"){
          if (name_cont(words[1]) && name_cont(words[2]) ){
             Nom3=ent_num(words[3] , 50);
-            if (Nom3!=-1){
+            if (Nom3!=-1) {
                  Nom2=search_poly(words[2],store);
                  if (Nom2!=-1){
                     Nom=search_poly(words[1],store);
                     if (Nom!=-1){
-                        store[Nom]=pow(store[Nom2], Nom3);
+                        if (get_degree(store[Nom2])<=50) {store[Nom]=pow(store[Nom2], Nom3);}//если степень не превышает 50
+                        else {cout <<"Degree of polynom is more than 50.\n";}
                      }
-                     else{ store.push_back(pow(store[Nom2], Nom3)); store[store.size()-1].setname(words[1]);}
+                     else{
+                            if (get_degree(store[Nom2])<=50) {store.push_back(pow(store[Nom2], Nom3)); store[store.size()-1].setname(words[1]);}
+                             else {cout <<"Degree of polynom is more than 50.\n";}}
 
                  }
                  else {cout<<"Polynom "<<words[2]<<" is not declared.\n";}
 
             }
+
          }
          else {cout<<"Name of the polylom entered incorrectly.\n"; }
     }

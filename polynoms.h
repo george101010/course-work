@@ -15,7 +15,7 @@ class polynom {
          friend  polynom derivat(polynom& ,int n);//производная порядка n
          friend  polynom pow(polynom& ,int n);// перегрузка возведения в степень
          friend  polynom inser(polynom&   A,polynom&   B);//вставка полинома В в полином А
-
+         friend int get_degree(polynom& A);
          friend  string getname(polynom&  );//возвращает имя полинома
          void mp(string st,vector <long long int> &cf);
          void setname(string st);//присвоение имени из основной программы

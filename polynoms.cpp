@@ -208,7 +208,9 @@ ostream& operator<< (ostream &out, const polynom &A){ // перегрузка co
 //===присвоение имени полиному из основной программы
     void polynom :: setname(string st){
         name=st;}
-
+//===получение степени полинома
+ int get_degree(polynom& A){
+    return A.degree; }
 
 
 
