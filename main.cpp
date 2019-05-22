@@ -179,7 +179,7 @@ if (n_o_w==4){
                             store[Nom]=store[Nom2]*store[Nom3];
                         }
                         else{ store.push_back(store[Nom2]*store[Nom3]); store[store.size()-1].setname(words[1]);} }
-                 else {cout<<"One of the polynoms have degree more than 50.\n";}
+                 else {cout<<"One of the polynoms have degree more than 100.\n";}
                      }
                       else{ cout<<"Polynom "<<words[2]<<" or polynom "<<words[3] <<" is not declared.\n"; }
         }
